@@ -1,4 +1,4 @@
-# Pymailer
+# Inmailer
 
 Pymailer is a Python package that provides email utilities, including CSS inlining for HTML emails.
 
@@ -9,13 +9,13 @@ Pymailer is a Python package that provides email utilities, including CSS inlini
 
 ## Installation
 ```sh
-pip install py_mailer
+pip install inmailer
 ```
 
 ## Usage
 
 ```python
-from py_mailer import inline_css
+from inmailer import inline_css
 
 html_content = """<html><head><style>h1 { color: red; }</style></head><body><h1>Hello</h1></body></html>"""
 processed_html = inline_css(html_content)

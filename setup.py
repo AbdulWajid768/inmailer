@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="py_mailer",
+    name="inmailer",
     version="0.1.0",
     author="Abdul Wajid",
     author_email="abdul45.wajid@gmail.com",
