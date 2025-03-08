@@ -1,1 +1,1 @@
-from core import is_pseudo_selector, inline_css
+from .core import is_pseudo_selector, inline_css

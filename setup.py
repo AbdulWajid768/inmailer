@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="inmailer",
-    version="0.1.0",
+    version="0.1.4",
     author="Abdul Wajid",
     author_email="abdul45.wajid@gmail.com",
     description="A Python package that offers email utilities.",
@@ -11,13 +11,14 @@ setup(
     url="https://github.com/AbdulWajid768/pymailer",
     packages=find_packages(),
     install_requires=[
-        "cssutils",
         "lxml",
+        "cssutils",
+        "cssselect",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.6, <=3.13",
+    python_requires=">=3.6",
 )
