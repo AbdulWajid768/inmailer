@@ -1,6 +1,6 @@
 # Inmailer
 
-Pymailer is a Python package that provides email utilities, including CSS inlining for HTML emails.
+Inmailer is a Python package that provides email utilities, including CSS inlining for HTML emails.
 
 ## Features
 - Convert in-file CSS (inside `<style>` tags) into inline styles
