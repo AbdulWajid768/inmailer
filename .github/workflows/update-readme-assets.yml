@@ -1,0 +1,30 @@
+name: Update README assets
+
+on:
+  schedule:
+    - cron: "19 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch stats cards
+        run: |
+          mkdir -p assets
+          curl -fsSL "https://gh-stats.work/api/pin/?username=AbdulWajid768&repo=inmailer&theme=radical&hide_border=true&bg_color=0d0221&title_color=00d4aa&icon_color=ff006e&text_color=e0e0e0&border_radius=12" -o assets/stats-pin.svg
+          curl -fsSL "https://gh-stats.work/api/top-langs/?username=AbdulWajid768&theme=radical&hide_border=true&bg_color=0d0221&title_color=00d4aa&text_color=e0e0e0&layout=compact&border_radius=12" -o assets/stats-top-langs.svg
+
+      - name: Commit assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/stats-pin.svg assets/stats-top-langs.svg
+          git diff --staged --quiet && echo "No asset changes" && exit 0
+          git commit -m "chore(docs): refresh README assets"
+          git push
