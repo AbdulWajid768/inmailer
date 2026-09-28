@@ -1,36 +1,119 @@
-# Inmailer
+<div align="center">
 
-Inmailer is a Python package that provides email utilities, including CSS inlining for HTML emails.
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  ░▒▓  INMAILER  ▓▒░                                               ║
+║  HTML email CSS · inline engine · inbox-safe output               ║
+╚══════════════════════════════════════════════════════════════════╝
+```
 
-## Features
-- Convert in-file CSS (inside `<style>` tags) into inline styles
-- Retain non-inlineable styles (e.g., `@media`, `:hover`) in `<style>`
-- Maintain HTML structure while applying styles efficiently
+[![PyPI](https://img.shields.io/badge/PyPI-inmailer-3776AB?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/inmailer/)
+[![Python](https://img.shields.io/badge/Python-3.6+-00d4aa?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-7c3aed?style=for-the-badge)](LICENSE)
 
-## Installation
-```sh
+**Turn styled HTML into email-client-ready markup—automatically.**
+
+[Install](#-install) · [Usage](#-usage) · [How it works](#-how-it-works)
+
+</div>
+
+---
+
+## ◈ Signal
+
+Email clients strip `<style>` blocks and ignore half your CSS. **Inmailer** parses in-document styles, inlines what clients understand, and preserves the rest (`@media`, `:hover`, `@font-face`) in a rebuilt `<style>` tag.
+
+One function. Predictable output. Fewer broken newsletters.
+
+---
+
+## ◈ Install
+
+```bash
 pip install inmailer
 ```
 
-## Usage
+Or from source:
+
+```bash
+git clone https://github.com/AbdulWajid768/inmailer.git
+cd inmailer && pip install -e .
+```
+
+**Dependencies:** `lxml`, `cssutils`, `cssselect`
+
+---
+
+## ◈ Usage
 
 ```python
 from inmailer import inline_css
 
-html_content = """<html><head><style>h1 { color: red; }</style></head><body><h1>Hello</h1></body></html>"""
-processed_html = inline_css(html_content)
-print(processed_html)
+html_content = """
+<html>
+  <head>
+    <style>
+      h1 { color: #00d4aa; font-size: 24px; }
+      a:hover { text-decoration: underline; }
+      @media (max-width: 600px) { .wrap { padding: 8px; } }
+    </style>
+  </head>
+  <body>
+    <h1>Hello, inbox</h1>
+  </body>
+</html>
+"""
+
+processed = inline_css(html_content)
+print(processed)
 ```
 
-## Contributing
-Contributions are welcome! 
+**Result:** `h1` gets inline `style=…`; `:hover` and `@media` rules stay in `<head><style>`.
 
-To contribute:
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature-branch`)
-3. Commit your changes (`git commit -m 'Add new feature'`)
-4. Push to the branch (`git push origin feature-branch`)
-5. Open a Pull Request
+---
 
-## License
-This project is licensed under the MIT License.
+## ◈ How it works
+
+```text
+  HTML + <style>          parse (cssutils)
+        │                      │
+        ▼                      ▼
+  classify rules ──► inlineable (no pseudo-selectors)
+        │                      │
+        │                      ├── match via CSSSelector (lxml)
+        │                      └── merge into element style=""
+        │
+        └── non-inlineable (@media, @font-face, :hover, …)
+                    └── re-insert single <style> in <head>
+```
+
+| Capability | Status |
+| --- | --- |
+| Inline class/element rules | ✓ |
+| Preserve `@media` queries | ✓ |
+| Preserve pseudo-classes (`:hover`, etc.) | ✓ |
+| `!important` override semantics | ✓ |
+| Graceful skip on malformed CSS | ✓ |
+
+---
+
+## ◈ Contributing
+
+1. Fork → branch → commit → PR  
+2. Keep changes focused; match existing style in `inmailer/core.py`.
+
+---
+
+## ◈ Maintainer
+
+**[Abdul Wajid](https://github.com/AbdulWajid768)** · [abdul45.wajid@gmail.com](mailto:abdul45.wajid@gmail.com)
+
+[![GitHub](https://img.shields.io/badge/@AbdulWajid768-181717?style=flat&logo=github)](https://github.com/AbdulWajid768)
+
+---
+
+<div align="center">
+
+<sub>Style in the lab. Render in the inbox.</sub>
+
+</div>
