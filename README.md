@@ -22,8 +22,8 @@
 
 <br/>
 
-<img src="https://github-readme-stats.vercel.app/api/pin/?username=AbdulWajid768&repo=inmailer&theme=radical&hide_border=true&bg_color=0d0221&title_color=00d4aa&icon_color=ff006e&text_color=e0e0e0&border_radius=12" width="48%"/>
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=AbdulWajid768&theme=radical&hide_border=true&bg_color=0d0221&title_color=00d4aa&text_color=e0e0e0&layout=compact&border_radius=12" width="48%"/>
+<img src="https://gh-stats.work/api/pin/?username=AbdulWajid768&repo=inmailer&theme=radical&hide_border=true&bg_color=0d0221&title_color=00d4aa&icon_color=ff006e&text_color=e0e0e0&border_radius=12" width="48%"/>
+<img src="https://gh-stats.work/api/top-langs/?username=AbdulWajid768&theme=radical&hide_border=true&bg_color=0d0221&title_color=00d4aa&text_color=e0e0e0&layout=compact&border_radius=12" width="48%"/>
 
 <br/><br/>
 
@@ -123,7 +123,7 @@ Fork → branch → PR. Keep changes surgical in `inmailer/core.py`.
 
 [![GitHub](https://img.shields.io/badge/@AbdulWajid768-181717?style=flat&logo=github)](https://github.com/AbdulWajid768)
 
-<img src="https://komarev.com/ghpvc/?username=AbdulWajid768-inmailer&label=NEURAL%20VIEWS&color=ff006e&style=for-the-badge" alt="views"/>
+<img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/AbdulWajid768/inmailer&count.shadow=false&label=NEURAL%20VIEWS&color=ff006e&labelColor=0f172a" alt="views"/>
 
 <sub>Style in the lab · Render in the inbox.</sub>
 
