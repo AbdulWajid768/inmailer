@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=77.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inmailer"
+version = "0.2.0"
+description = "A Python package that offers email utilities, including CSS inlining for HTML emails."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Abdul Wajid", email = "abdul45.wajid@gmail.com" }]
+keywords = ["email", "css", "inline", "html", "mailer", "newsletter"]
+dependencies = [
+    "lxml>=4.6",
+    "cssutils>=2.3",
+    "cssselect>=1.1",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Communications :: Email",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: HTML",
+]
+
+[project.urls]
+Homepage = "https://github.com/AbdulWajid768/pymailer"
+Repository = "https://github.com/AbdulWajid768/pymailer"
+Issues = "https://github.com/AbdulWajid768/pymailer/issues"
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[project.scripts]
+inmailer = "inmailer.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["inmailer*"]
+
+[tool.setuptools.package-data]
+inmailer = ["py.typed"]

@@ -3,7 +3,7 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,40:00d4aa,100:16213e&height=200&section=header&text=INMAILER&fontSize=52&fontColor=ffffff&animation=twinkling&desc=CSS+%E2%86%92+inline+%7C+inbox-safe+HTML&descSize=16&descAlignY=72&descAlign=62"/>
 
 <a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=17&duration=2600&pause=800&color=00D4AA&center=true&vCenter=true&multiline=true&repeat=true&width=640&height=88&lines=Inline+what+Gmail+will+keep;Preserve+%40media+%2B+%3Ahover;One+function%2C+predictable+output;Built+for+newsletters+%26+transactional" alt="Typing animation"/>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=17&duration=2600&pause=800&color=00D4AA&center=true&vCenter=true&multiline=true&repeat=true&width=640&height=88&lines=Inline+what+Gmail+will+keep;Preserve+%40media+%2B+%3Ahover;Specificity-aware+cascade;Built+for+newsletters+%26+transactional" alt="Typing animation"/>
 </a>
 
 <br/>
@@ -37,7 +37,7 @@
 
 ## ◈ Transmission
 
-Email clients **amputate** your `<style>` blocks. **Inmailer** rewrites HTML for the inbox era: parse document CSS, **inline** what survives, **rehydrate** `@media`, `@font-face`, and pseudo-rules into a single `<style>` in `<head>`.
+Email clients **amputate** your `<style>` blocks. **Inmailer** rewrites HTML for the inbox era: parse document CSS, **inline** what survives (following the real CSS cascade — specificity and `!important` win), and **rehydrate** `@media`, `@font-face`, and pseudo-rules into a single `<style>` in `<head>`.
 
 ```text
    HTML + <style>  ──►  cssutils parse  ──►  rule classifier
@@ -58,9 +58,11 @@ Email clients **amputate** your `<style>` blocks. **Inmailer** rewrites HTML for
 pip install inmailer
 ```
 
+Requires **Python 3.8+**.
+
 ```bash
 git clone https://github.com/AbdulWajid768/inmailer.git
-cd inmailer && pip install -e .
+cd inmailer && pip install -e .[test]
 ```
 
 **Stack:** `lxml` · `cssutils` · `cssselect`
@@ -76,16 +78,44 @@ html_content = """
 <html>
   <head>
     <style>
-      h1 { color: #00d4aa; font-size: 24px; }
-      a:hover { text-decoration: underline; }
+      h1 { color: red; }
+      #title { color: green; }            /* more specific -> wins */
+      a:hover { text-decoration: underline; }  /* kept in <style> */
       @media (max-width: 600px) { .wrap { padding: 8px; } }
     </style>
   </head>
-  <body><h1>Hello, inbox</h1></body>
+  <body><h1 id="title">Hello, inbox</h1></body>
 </html>
 """
 
 print(inline_css(html_content))
+```
+
+### Options
+
+```python
+inline_css(
+    html_content,
+    extra_css="p { font-size: 14px; }",  # inline CSS from a separate source
+    remove_classes=True,                 # strip class="" after inlining
+    keep_style_tags=False,               # also keep the original <style> block
+    pretty_print=True,                   # set False for compact output
+)
+```
+
+### Work with files
+
+```python
+from inmailer import inline_css_file
+
+inline_css_file("newsletter.html", "newsletter.inlined.html", remove_classes=True)
+```
+
+### Command line
+
+```bash
+inmailer input.html -o output.html --remove-classes
+cat input.html | inmailer --compact > output.html
 ```
 
 ---
@@ -94,17 +124,21 @@ print(inline_css(html_content))
 
 | Capability | Status |
 | --- | --- |
-| Inline element/class rules | ✓ |
-| Preserve `@media` | ✓ |
-| Preserve `:hover` / pseudo | ✓ |
+| Inline element/class/id rules | ✓ |
+| Specificity-aware cascade | ✓ |
 | `!important` merge logic | ✓ |
+| Preserve existing inline styles | ✓ |
+| Preserve `@media` / `@font-face` | ✓ |
+| Preserve `:hover` / pseudo | ✓ |
+| Inline extra CSS (`extra_css`) | ✓ |
+| CLI + file helper | ✓ |
 | Malformed CSS → skip gracefully | ✓ |
 
 ---
 
 ## ◈ Contributing
 
-Fork → branch → PR. Keep changes surgical in `inmailer/core.py`.
+Fork → branch → `pip install -e .[test]` → `pytest` → PR. Keep changes surgical in `inmailer/core.py`.
 
 ---
 
