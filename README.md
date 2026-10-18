@@ -5,8 +5,6 @@
 <p align="center">
   <a href="https://pypi.org/project/inmailer/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/inmailer.svg"></a>
   <a href="https://pypi.org/project/inmailer/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/inmailer.svg"></a>
-  <a href="https://github.com/AbdulWajid768/inmailer/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/AbdulWajid768/inmailer/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://pypi.org/project/inmailer/"><img alt="Downloads" src="https://img.shields.io/pypi/dm/inmailer.svg"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/pypi/l/inmailer.svg"></a>
 </p>
 
