@@ -50,3 +50,6 @@ include = ["inmailer*"]
 
 [tool.setuptools.package-data]
 inmailer = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

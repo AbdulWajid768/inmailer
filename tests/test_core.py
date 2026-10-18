@@ -1,7 +1,5 @@
 import re
 
-import pytest
-
 from inmailer import inline_css, inline_css_file, is_pseudo_selector
 
 

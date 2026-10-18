@@ -14,7 +14,7 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 import cssutils
 from lxml import html
-from lxml.cssselect import CSSSelector, ExpressionError
+from lxml.cssselect import CSSSelector
 
 # cssutils is chatty: it logs a WARNING to stderr for every property or value it
 # does not recognise (which is common in real-world email CSS). Silence it so the
@@ -230,7 +230,9 @@ def inline_css(
     for specificity, order, selector_text, declaration in inlineable:
         try:
             selector = CSSSelector(selector_text)
-        except (ExpressionError, Exception):  # noqa: B014 - cssselect raises varied types
+        except Exception:
+            # cssselect raises a variety of errors on selectors lxml cannot
+            # compile; keep the rule in a <style> tag rather than dropping it.
             parent_rule = getattr(declaration, 'parentRule', None)
             if parent_rule is not None:
                 non_inlineable_rules.append(parent_rule)
