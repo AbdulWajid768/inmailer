@@ -103,11 +103,27 @@ inline_css(
 )
 ```
 
+### External stylesheets
+
+`<link rel="stylesheet">` tags are resolved and inlined automatically. Local
+hrefs resolve against `base_path` (or, with `inline_css_file`, the HTML file's
+own directory). You can also pass CSS files explicitly:
+
+```python
+inline_css(
+    html_content,
+    css_files=["theme.css", "overrides.css"],
+    base_path="templates/",
+    allow_remote=False,   # set True to fetch http(s) <link> stylesheets
+)
+```
+
 ### Work with files
 
 ```python
 from inmailer import inline_css_file
 
+# relative <link href="..."> is resolved next to newsletter.html
 inline_css_file("newsletter.html", "newsletter.inlined.html", remove_classes=True)
 ```
 
@@ -115,6 +131,7 @@ inline_css_file("newsletter.html", "newsletter.inlined.html", remove_classes=Tru
 
 ```bash
 inmailer input.html -o output.html --remove-classes
+inmailer input.html --css-file theme.css --css-file overrides.css
 cat input.html | inmailer --compact > output.html
 ```
 
@@ -131,6 +148,7 @@ cat input.html | inmailer --compact > output.html
 | Preserve `@media` / `@font-face` | ✓ |
 | Preserve `:hover` / pseudo | ✓ |
 | Inline extra CSS (`extra_css`) | ✓ |
+| Resolve `<link>` / external CSS files | ✓ |
 | CLI + file helper | ✓ |
 | Malformed CSS → skip gracefully | ✓ |
 

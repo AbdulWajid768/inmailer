@@ -7,6 +7,7 @@ Usage::
 """
 
 import argparse
+import os
 import sys
 from typing import List, Optional
 
@@ -33,6 +34,30 @@ def build_parser() -> argparse.ArgumentParser:
         "-c",
         "--extra-css",
         help="Path to an additional CSS file to inline alongside the HTML.",
+    )
+    parser.add_argument(
+        "--css-file",
+        action="append",
+        default=[],
+        metavar="PATH",
+        dest="css_files",
+        help="External CSS file to inline (repeatable).",
+    )
+    parser.add_argument(
+        "--base-path",
+        help="Directory for resolving <link> hrefs and --css-file paths "
+        "(defaults to the input file's directory).",
+    )
+    parser.add_argument(
+        "--no-resolve-links",
+        action="store_false",
+        dest="resolve_links",
+        help="Do not read and inline <link rel='stylesheet'> tags.",
+    )
+    parser.add_argument(
+        "--allow-remote",
+        action="store_true",
+        help="Fetch http(s) stylesheet links over the network (off by default).",
     )
     parser.add_argument(
         "--remove-classes",
@@ -62,9 +87,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
+    base_path = args.base_path
     if args.input:
         with open(args.input, "r", encoding=args.encoding) as handle:
             html_content = handle.read()
+        if base_path is None:
+            base_path = os.path.dirname(os.path.abspath(args.input))
     else:
         html_content = sys.stdin.read()
 
@@ -76,6 +104,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     result = inline_css(
         html_content,
         extra_css=extra_css,
+        css_files=args.css_files,
+        base_path=base_path,
+        resolve_links=args.resolve_links,
+        allow_remote=args.allow_remote,
+        encoding=args.encoding,
         remove_classes=args.remove_classes,
         keep_style_tags=args.keep_style_tags,
         pretty_print=not args.compact,

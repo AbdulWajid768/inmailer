@@ -13,6 +13,14 @@ All notable changes to this project are documented here. This project adheres to
   and merged with (rather than overwritten by) styles from `<style>` tags.
 - `extra_css` parameter to inline CSS supplied as a string (e.g. from a separate
   stylesheet file).
+- **External stylesheet support.** `<link rel="stylesheet">` tags are now read
+  and inlined (`resolve_links`, on by default; unresolved links are left in
+  place). Local hrefs resolve against `base_path`; remote `http(s)` links are
+  fetched only when `allow_remote=True`. `inline_css_file()` resolves relative
+  links against the HTML file's directory automatically.
+- `css_files` parameter to inline a list of external CSS files by path.
+- CLI gains `--css-file` (repeatable), `--base-path`, `--no-resolve-links`, and
+  `--allow-remote`.
 - `remove_classes` option to strip `class` attributes after inlining.
 - `keep_style_tags` option to also retain the original CSS in a `<style>` tag.
 - `pretty_print` option for compact output.

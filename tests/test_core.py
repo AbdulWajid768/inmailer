@@ -118,6 +118,67 @@ def test_inline_css_file_roundtrip(tmp_path):
     assert "color: red" in dst.read_text()
 
 
+def test_link_stylesheet_is_resolved_and_removed(tmp_path):
+    (tmp_path / "styles.css").write_text("h1 { color: navy; }")
+    html = (
+        "<html><head><link rel='stylesheet' href='styles.css'></head>"
+        "<body><h1>Hi</h1></body></html>"
+    )
+    out = inline_css(html, base_path=str(tmp_path))
+    assert "color: navy" in style_of(out, "h1")
+    assert "<link" not in out  # the resolved link tag is removed
+
+
+def test_missing_link_is_left_in_place():
+    html = (
+        "<html><head><link rel='stylesheet' href='nope.css'></head>"
+        "<body><h1>Hi</h1></body></html>"
+    )
+    out = inline_css(html, base_path="/does/not/exist")
+    assert "<link" in out  # unresolved link is preserved
+
+
+def test_remote_link_not_fetched_by_default():
+    html = (
+        "<html><head><link rel='stylesheet' href='https://example.com/a.css'>"
+        "</head><body><h1>Hi</h1></body></html>"
+    )
+    out = inline_css(html)  # allow_remote defaults to False
+    assert "<link" in out
+
+
+def test_resolve_links_can_be_disabled(tmp_path):
+    (tmp_path / "styles.css").write_text("h1 { color: navy; }")
+    html = (
+        "<html><head><link rel='stylesheet' href='styles.css'></head>"
+        "<body><h1>Hi</h1></body></html>"
+    )
+    out = inline_css(html, base_path=str(tmp_path), resolve_links=False)
+    assert style_of(out, "h1") is None
+    assert "<link" in out
+
+
+def test_css_files_param(tmp_path):
+    (tmp_path / "a.css").write_text("h1 { color: red; }")
+    (tmp_path / "b.css").write_text("h1 { font-size: 20px; }")
+    html = "<html><body><h1>Hi</h1></body></html>"
+    out = inline_css(html, css_files=["a.css", "b.css"], base_path=str(tmp_path))
+    style = style_of(out, "h1")
+    assert "color: red" in style
+    assert "font-size: 20px" in style
+
+
+def test_inline_css_file_resolves_relative_link(tmp_path):
+    (tmp_path / "styles.css").write_text("p { color: teal; }")
+    src = tmp_path / "mail.html"
+    src.write_text(
+        "<html><head><link rel='stylesheet' href='styles.css'></head>"
+        "<body><p>Hi</p></body></html>"
+    )
+    out = inline_css_file(str(src))  # base_path defaults to the file's dir
+    assert "color: teal" in style_of(out, "p")
+
+
 def test_malformed_selector_does_not_crash():
     html = "<html><head><style>@!! broken { color: red } h1 { color: blue }</style></head><body><h1>Hi</h1></body></html>"
     out = inline_css(html)
